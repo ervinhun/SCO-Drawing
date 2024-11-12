@@ -7,11 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class DrawingController {
@@ -39,6 +34,18 @@ public class DrawingController {
     @FXML
     private Button btnClear;
 
+    @FXML
+    private ChoiceBox<String> cbLine;
+
+    @FXML
+    private CheckBox ckFill;
+
+    @FXML
+    private ChoiceBox<String> cbColor;
+
+    @FXML
+    private Label lblCount;
+
     public DrawingController() {
 
     }
@@ -47,7 +54,7 @@ public class DrawingController {
     @FXML
     public void initialize() {
         assert cbShape != null;
-        cbShape.getItems().addAll("Circle", "Rectangle", "Square", "Triangle");
+        cbShape.getItems().addAll("Circle", "Rectangle", "Square", "Triangle", "Star");
         cbShape.getSelectionModel().select(0);
 
         assert cbPattern != null;
@@ -56,6 +63,15 @@ public class DrawingController {
         txtSize.setText(String.valueOf(20));
 
         lstShapes.setOnMouseClicked(this::handleDoubleClick);
+
+        assert cbLine != null;
+        for (int i = 1; i <= 10 ; i++)
+            cbLine.getItems().add(String.valueOf(i) + " px");
+        cbLine.getSelectionModel().select(1);
+
+        cbColor.getItems().addAll("Black", "Red", "Green", "Blue");
+        cbColor.getSelectionModel().select(0);
+
     }
 
     private void handleDoubleClick(MouseEvent event) {
@@ -67,10 +83,18 @@ public class DrawingController {
 
     @FXML
     private void ButtonAddClicked() {
-        if (checkForValidSize(txtSize.getText()))
-            lstShapes.getItems().add(new Shapes(Integer.parseInt(txtSize.getText()), cbShape.getValue()));
+        String lineSize = String.valueOf(cbLine.getItems().indexOf(cbLine.getValue())+1);
+
+        if (checkForValidSize(txtSize.getText()) && checkForValidSize(lineSize)) {
+            System.out.println(cbLine.getId()+1);
+            lstShapes.getItems().add(
+                    new Shapes(Integer.parseInt(txtSize.getText()), cbShape.getValue(),
+                            Integer.parseInt(lineSize), (ckFill.isSelected()), cbColor.getValue()));
+            lblCount.setVisible(true);
+            lblCount.setText("Count: " + String.valueOf(lstShapes.getItems().size()));
+        }
         else
-            System.out.println("Size is not Valid");
+            System.out.println("Size or line width is not Valid");
     }
 
     @FXML
@@ -82,6 +106,12 @@ public class DrawingController {
         lstShapes.getItems().clear();
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        lblCount.setVisible(false);
+    }
+
+    @FXML
+    private void checkBoxFilled() {
+       // cbColor.setVisible(ckFill.isSelected());
     }
 
     private boolean checkForValidSize(String size) {

@@ -1,11 +1,11 @@
 package dk.easv.drawing.bll;
 
 import dk.easv.drawing.be.Shapes;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -32,9 +32,17 @@ public class DrawingLogic {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         boolean firstToDraw = true;
         double prevSize = 0.0;
+        double[] xPoints;
+        double[] yPoints;
+        Color fillColor = Color.BLACK;
         for (Shapes shape : shapes) {
             if (maxHeight < shape.getSize())
                 maxHeight = shape.getSize();
+            gc.setLineWidth(shape.getLine());
+
+            /**
+             * If it is not the first shape to draw, then changing the startpoint according to the pattern
+             */
             if (!firstToDraw) {
                 switch (pattern) {
                     case "Grid":
@@ -61,27 +69,85 @@ public class DrawingLogic {
                         break;
                 }
             }
+
+            /**
+             * Setting color, for the line or for the fill
+             */
+            switch (shape.getColor()) {
+                case "Black":
+                    fillColor = Color.BLACK;
+                    break;
+                case "Red":
+                    fillColor = Color.RED;
+                    break;
+                case "Green":
+                    fillColor = Color.GREEN;
+                    break;
+                case "Blue":
+                    fillColor = Color.BLUE;
+                    break;
+            }
+
+            /**
+             * Setting the color to the shape
+             */
+            if (shape.isFilled())
+                gc.setFill(fillColor);
+            else
+                gc.setStroke(fillColor);
+
+
+            /**
+             * Drawing the shapes
+             */
             switch (shape.getShape()) {
                 case "Circle":
-                    gc.setLineWidth(2.0);
-                    gc.strokeOval(startX, startY, shape.getSize(), shape.getSize());
+                    if (shape.isFilled())
+                        gc.fillOval(startX, startY, shape.getSize(), shape.getSize());
+                    else
+                        gc.strokeOval(startX, startY, shape.getSize(), shape.getSize());
                     break;
                 case "Rectangle":
-                    gc.setLineWidth(2.0);
-                    gc.strokeRect(startX, startY, shape.getSize()/1.5, shape.getSize());
+                    if (shape.isFilled())
+                        gc.fillRect(startX, startY, shape.getSize(), shape.getSize());
+                    else
+                        gc.strokeRect(startX, startY, shape.getSize()/1.5, shape.getSize());
                     break;
                 case "Square":
-                    gc.setLineWidth(2.0);
-                    gc.strokeRect(startX, startY, shape.getSize(), shape.getSize());
+                    if (shape.isFilled())
+                        gc.fillRect(startX, startY, shape.getSize(), shape.getSize());
+                    else
+                        gc.strokeRect(startX, startY, shape.getSize(), shape.getSize());
                     break;
                 case "Triangle":
-                    gc.setLineWidth(2.0);
                     startX += shape.getSize() / 2.0;
                     double height = (Math.sqrt(3) / 2) * shape.getSize();
-                    double[] xPoints = {startX, startX - shape.getSize() / 2.0, startX + shape.getSize() / 2.0};
-                    double[] yPoints = {startY, startY + height, startY + height};
-                    gc.strokePolygon(xPoints, yPoints, 3);
+                    xPoints = new double[]{startX, startX - shape.getSize() / 2.0, startX + shape.getSize() / 2.0};
+                    yPoints = new double[]{startY, startY + height, startY + height};
+                    if (shape.isFilled())
+                        gc.fillPolygon(xPoints, yPoints, 3);
+                    else
+                        gc.strokePolygon(xPoints, yPoints, 3);
                     break;
+                case "Star":
+                    // Calculate the points of the star
+                    xPoints = new double[10];
+                    yPoints = new double[10];
+                    startX += shape.getSize();
+                    startY += shape.getSize();
+
+                    for (int i = 0; i < 10; i++) {
+                        double angle = Math.toRadians(36 * i); // Each point is 36 degrees apart (360/10)
+                        double radius = (i % 2 == 0) ? shape.getSize() : ((double) shape.getSize() / 2); // Alternate between outer and inner points
+                        xPoints[i] = startX + radius * Math.cos(angle);
+                        yPoints[i] = startY - radius * Math.sin(angle); // Subtract for Y because JavaFX Y-axis is inverted
+                    }
+
+                    // Draw the outline of the star
+                    if (shape.isFilled())
+                        gc.fillPolygon(xPoints, yPoints, 10);
+                    else
+                        gc.strokePolygon(xPoints, yPoints, 10);
             }
             firstToDraw = false;
             prevSize = shape.getSize();

@@ -2,6 +2,7 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -11,14 +12,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.drawing.DrawingController">
    <children>
-      <ChoiceBox fx:id="cbShape" layoutX="14.0" layoutY="38.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="cbShape" layoutX="13.0" layoutY="56.0" prefWidth="150.0" />
       <TextField fx:id="txtSize" layoutX="14.0" layoutY="443.0" promptText="Size" />
       <Button fx:id="btnAdd" layoutX="14.0" layoutY="481.0" mnemonicParsing="false" onAction="#ButtonAddClicked" prefHeight="26.0" prefWidth="150.0" text="Add -&gt;" />
-      <ListView fx:id="lstShapes" layoutX="176.0" layoutY="38.0" prefHeight="469.0" prefWidth="180.0" />
+      <ListView fx:id="lstShapes" layoutX="176.0" layoutY="55.0" prefHeight="453.0" prefWidth="180.0" />
       <ChoiceBox fx:id="cbPattern" layoutX="191.0" layoutY="522.0" prefWidth="150.0" />
       <Button fx:id="btnDraw" layoutX="635.0" layoutY="522.0" mnemonicParsing="false" onAction="#btnDrawClicked" prefHeight="26.0" prefWidth="150.0" text="Draw shapes" />
       <Canvas fx:id="canvas" height="470.0" layoutX="370.0" layoutY="38.0" width="380.0" />
       <Label layoutX="14.0" layoutY="415.0" text="Size:" />
       <Button fx:id="btnClear" layoutX="473.0" layoutY="521.0" mnemonicParsing="false" onAction="#btnClearClicked" prefHeight="26.0" prefWidth="150.0" text="Clear Canvas" />
+      <Label layoutX="12.0" layoutY="38.0" text="Shape" />
+      <Label layoutX="14.0" layoutY="92.0" text="Line size" />
+      <ChoiceBox fx:id="cbLine" layoutX="14.0" layoutY="110.0" prefWidth="150.0" />
+      <CheckBox fx:id="ckFill" layoutX="14.0" layoutY="153.0" mnemonicParsing="false" onAction="#checkBoxFilled" text="Fill" />
+      <ChoiceBox fx:id="cbColor" layoutX="14.0" layoutY="177.0" prefWidth="150.0" />
+      <Label fx:id="lblCount" layoutX="177.0" layoutY="38.0" />
    </children>
 </AnchorPane>
