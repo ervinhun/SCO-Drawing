@@ -3,6 +3,7 @@ package dk.easv.drawing;
 import dk.easv.drawing.be.Shapes;
 import dk.easv.drawing.bll.DrawingLogic;
 import dk.easv.drawing.dal.CanvasSaver;
+import dk.easv.drawing.dal.PdfSaver;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
+
+import static dk.easv.drawing.dal.PdfSaver.savePdf;
 
 public class DrawingController {
     @FXML
@@ -92,7 +95,6 @@ public class DrawingController {
         String lineSize = String.valueOf(cbLine.getItems().indexOf(cbLine.getValue())+1);
 
         if (checkForValidSize(txtSize.getText()) && checkForValidSize(lineSize)) {
-            System.out.println(cbLine.getId()+1);
             lstShapes.getItems().add(
                     new Shapes(Integer.parseInt(txtSize.getText()), cbShape.getValue(),
                             Integer.parseInt(lineSize), (ckFill.isSelected()), cbColor.getValue()));
@@ -106,6 +108,7 @@ public class DrawingController {
     @FXML
     private void btnDrawClicked() {
         DrawingLogic drawingLogic = new DrawingLogic(lstShapes.getItems(), cbPattern.getValue(), canvas);
+        savePdf(canvas, "myCanvas.pdf");
         btnSave.setDisable(false);
     }
     @FXML
@@ -125,6 +128,7 @@ public class DrawingController {
     @FXML
     private void btnSaveClicked() throws IOException {
         CanvasSaver.saveCanvasAsPng(canvas, "myCanvasImage.png");
+        btnSave.setDisable(true);
     }
 
     private boolean checkForValidSize(String size) {

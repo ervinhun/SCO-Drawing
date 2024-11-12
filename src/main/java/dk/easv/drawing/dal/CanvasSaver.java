@@ -8,11 +8,16 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
+
 public class CanvasSaver {
-    private static final String FILEPATH = "./data/";
+    private static final String FILEPATH = "./save/";
 
     public static void saveCanvasAsPng(Canvas canvas, String filename) throws IOException {
         // Step 1: Render the Canvas to a WritableImage
+        File myDir = new File(FILEPATH);
+        if (myDir.mkdir()) {
+            System.out.println(FILEPATH + " Directory created");
+        }
         WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
         canvas.snapshot(null, writableImage);
 
@@ -20,7 +25,8 @@ public class CanvasSaver {
         File file = new File(FILEPATH + filename);
         try {
             ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", file);
-            System.out.println("Canvas saved as PNG to: " + FILEPATH);
+            System.out.println("Canvas saved as PNG to: " + FILEPATH + filename);
+
         } catch (IOException e) {
             System.err.println("Failed to save the canvas as PNG: " + e.getMessage());
         }
