@@ -2,11 +2,14 @@ package dk.easv.drawing;
 
 import dk.easv.drawing.be.Shapes;
 import dk.easv.drawing.bll.DrawingLogic;
+import dk.easv.drawing.dal.CanvasSaver;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class DrawingController {
@@ -45,6 +48,9 @@ public class DrawingController {
 
     @FXML
     private Label lblCount;
+
+    @FXML
+    private Button btnSave;
 
     public DrawingController() {
 
@@ -100,6 +106,7 @@ public class DrawingController {
     @FXML
     private void btnDrawClicked() {
         DrawingLogic drawingLogic = new DrawingLogic(lstShapes.getItems(), cbPattern.getValue(), canvas);
+        btnSave.setDisable(false);
     }
     @FXML
     private void btnClearClicked() {
@@ -107,11 +114,17 @@ public class DrawingController {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         lblCount.setVisible(false);
+        btnSave.setDisable(true);
     }
 
     @FXML
     private void checkBoxFilled() {
        // cbColor.setVisible(ckFill.isSelected());
+    }
+
+    @FXML
+    private void btnSaveClicked() throws IOException {
+        CanvasSaver.saveCanvasAsPng(canvas, "myCanvasImage.png");
     }
 
     private boolean checkForValidSize(String size) {

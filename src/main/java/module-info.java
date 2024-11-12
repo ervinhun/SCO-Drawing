@@ -1,7 +1,7 @@
 module dk.easv.drawing {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.desktop;
+    requires javafx.swing;
 
 
     opens dk.easv.drawing to javafx.fxml;

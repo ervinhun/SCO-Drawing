@@ -121,9 +121,9 @@ public class DrawingLogic {
                         gc.strokeRect(startX, startY, shape.getSize(), shape.getSize());
                     break;
                 case "Triangle":
-                    startX += shape.getSize() / 2.0;
+                    double startX3 = startX + shape.getSize() / 2.0;
                     double height = (Math.sqrt(3) / 2) * shape.getSize();
-                    xPoints = new double[]{startX, startX - shape.getSize() / 2.0, startX + shape.getSize() / 2.0};
+                    xPoints = new double[]{startX3, startX3 - shape.getSize() / 2.0, startX3 + shape.getSize() / 2.0};
                     yPoints = new double[]{startY, startY + height, startY + height};
                     if (shape.isFilled())
                         gc.fillPolygon(xPoints, yPoints, 3);
