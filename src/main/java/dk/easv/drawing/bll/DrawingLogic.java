@@ -41,9 +41,10 @@ public class DrawingLogic {
             gc.setLineWidth(shape.getLine());
 
             /**
-             * If it is not the first shape to draw, then changing the startpoint according to the pattern
+             * If it is not the first shape to draw or Random,
+             * then changing the startpoint according to the pattern
              */
-            if (!firstToDraw) {
+            if (!firstToDraw || pattern.equals("Random")) {
                 switch (pattern) {
                     case "Grid":
                         startX += prevSize + 10.0;
@@ -133,16 +134,13 @@ public class DrawingLogic {
                     // Calculate the points of the star
                     xPoints = new double[10];
                     yPoints = new double[10];
-                    startX += shape.getSize();
-                    startY += shape.getSize();
 
                     for (int i = 0; i < 10; i++) {
                         double angle = Math.toRadians(36 * i); // Each point is 36 degrees apart (360/10)
-                        double radius = (i % 2 == 0) ? shape.getSize() : ((double) shape.getSize() / 2); // Alternate between outer and inner points
+                        double radius = (i % 2 == 0) ? (double) shape.getSize() /2 : (((double) shape.getSize() / 2)/2); // Alternate between outer and inner points
                         xPoints[i] = startX + radius * Math.cos(angle);
-                        yPoints[i] = startY - radius * Math.sin(angle); // Subtract for Y because JavaFX Y-axis is inverted
+                        yPoints[i] = (startY + (double) shape.getSize() /2) - radius * Math.sin(angle); // Subtract for Y because JavaFX Y-axis is inverted
                     }
-
                     // Draw the outline of the star
                     if (shape.isFilled())
                         gc.fillPolygon(xPoints, yPoints, 10);

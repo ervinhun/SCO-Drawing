@@ -51,7 +51,7 @@ public class Shapes {
 
     @Override
     public String toString() {
-        return shape + " " + size + " " + line + " " + (filled?color + "(F)":color);
+        return shape + " " + line + " " + (filled?color + " (F)":color) + " " + size ;
     }
 
 
