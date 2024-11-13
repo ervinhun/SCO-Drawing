@@ -138,7 +138,7 @@ public class DrawingLogic {
                     for (int i = 0; i < 10; i++) {
                         double angle = Math.toRadians(36 * i); // Each point is 36 degrees apart (360/10)
                         double radius = (i % 2 == 0) ? (double) shape.getSize() /2 : (((double) shape.getSize() / 2)/2); // Alternate between outer and inner points
-                        xPoints[i] = startX + radius * Math.cos(angle);
+                        xPoints[i] = (startX + (double) shape.getSize() /2) + radius * Math.cos(angle);
                         yPoints[i] = (startY + (double) shape.getSize() /2) - radius * Math.sin(angle); // Subtract for Y because JavaFX Y-axis is inverted
                     }
                     // Draw the outline of the star

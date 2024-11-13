@@ -11,6 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import static dk.easv.drawing.dal.PdfSaver.savePdf;
@@ -108,7 +111,6 @@ public class DrawingController {
     @FXML
     private void btnDrawClicked() {
         DrawingLogic drawingLogic = new DrawingLogic(lstShapes.getItems(), cbPattern.getValue(), canvas);
-        savePdf(canvas, "myCanvas.pdf");
         btnSave.setDisable(false);
     }
     @FXML
@@ -127,7 +129,14 @@ public class DrawingController {
 
     @FXML
     private void btnSaveClicked() throws IOException {
-        CanvasSaver.saveCanvasAsPng(canvas, "myCanvasImage.png");
+        //Date date = new Date();
+        //String fileName = String.valueOf(date.getTime());
+        //System.out.println(fileName);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime now = LocalDateTime.now();
+        String fileName = dtf.format(now);
+        CanvasSaver.saveCanvasAsPng(canvas, fileName + ".png");
+        savePdf(canvas, fileName + ".pdf");
         btnSave.setDisable(true);
     }
 

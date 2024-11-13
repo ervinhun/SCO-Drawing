@@ -26,6 +26,6 @@
       <CheckBox fx:id="ckFill" layoutX="14.0" layoutY="153.0" mnemonicParsing="false" onAction="#checkBoxFilled" text="Fill" />
       <ChoiceBox fx:id="cbColor" layoutX="14.0" layoutY="177.0" prefWidth="150.0" />
       <Label fx:id="lblCount" layoutX="177.0" layoutY="38.0" />
-      <Button fx:id="btnSave" layoutX="635.0" layoutY="559.0" mnemonicParsing="false" onAction="#btnSaveClicked" prefHeight="26.0" prefWidth="150.0" text="Save as image" disable="true" />
+      <Button fx:id="btnSave" layoutX="635.0" layoutY="559.0" mnemonicParsing="false" onAction="#btnSaveClicked" prefHeight="26.0" prefWidth="150.0" text="Save as image and pdf" disable="true" />
    </children>
 </AnchorPane>
