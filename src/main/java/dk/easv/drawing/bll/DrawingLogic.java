@@ -5,8 +5,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -24,10 +22,10 @@ public class DrawingLogic {
         startX = 10.0;
         startY = 10.0;
         maxHeight = 0;
-        Draw();
+        draw();
     }
 
-    private void Draw() {
+    private void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         boolean firstToDraw = true;
@@ -51,6 +49,7 @@ public class DrawingLogic {
                         if ((startX + shape.getSize()) >= canvas.getWidth()) {
                             startX = 10.0;
                             startY += maxHeight + 10.0;
+                            maxHeight = shape.getSize();
                             if ((startY + shape.getSize()) >= canvas.getHeight())
                                 return;
                         }
@@ -66,6 +65,7 @@ public class DrawingLogic {
                         if (startX >= canvas.getWidth()+shape.getSize()) {
                             startX = 10.0;
                             startY += maxHeight + 10.0;
+                            maxHeight = shape.getSize();
                         }
                         break;
                 }

@@ -2,8 +2,8 @@ package dk.easv.drawing;
 
 import dk.easv.drawing.be.Shapes;
 import dk.easv.drawing.bll.DrawingLogic;
+import dk.easv.drawing.bll.LoadSave;
 import dk.easv.drawing.dal.CanvasSaver;
-import dk.easv.drawing.dal.PdfSaver;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,7 +13,8 @@ import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static dk.easv.drawing.dal.PdfSaver.savePdf;
@@ -58,6 +59,11 @@ public class DrawingController {
     @FXML
     private Button btnSave;
 
+    @FXML
+    private Button btnLoad;
+
+    private final static String FILENAME = "mySave";
+
     public DrawingController() {
 
     }
@@ -77,13 +83,25 @@ public class DrawingController {
         lstShapes.setOnMouseClicked(this::handleDoubleClick);
 
         assert cbLine != null;
-        for (int i = 1; i <= 10 ; i++)
+        for (int i = 1; i <= 10; i++)
             cbLine.getItems().add(String.valueOf(i) + " px");
         cbLine.getSelectionModel().select(1);
 
         cbColor.getItems().addAll("Black", "Red", "Green", "Blue");
         cbColor.getSelectionModel().select(0);
 
+        checkIfExists();
+
+    }
+
+    private void checkIfExists() {
+        LoadSave loadSave = new LoadSave();
+        if (loadSave.isExists(FILENAME)) {
+            btnLoad.setDisable(false);
+            btnLoad.setText("Load pattern");
+        } else {
+            btnLoad.setDisable(true);
+        }
     }
 
     private void handleDoubleClick(MouseEvent event) {
@@ -94,8 +112,8 @@ public class DrawingController {
     }
 
     @FXML
-    private void ButtonAddClicked() {
-        String lineSize = String.valueOf(cbLine.getItems().indexOf(cbLine.getValue())+1);
+    private void buttonAddClicked() {
+        String lineSize = String.valueOf(cbLine.getItems().indexOf(cbLine.getValue()) + 1);
 
         if (checkForValidSize(txtSize.getText()) && checkForValidSize(lineSize)) {
             lstShapes.getItems().add(
@@ -103,8 +121,8 @@ public class DrawingController {
                             Integer.parseInt(lineSize), (ckFill.isSelected()), cbColor.getValue()));
             lblCount.setVisible(true);
             lblCount.setText("Count: " + String.valueOf(lstShapes.getItems().size()));
-        }
-        else
+            btnLoad.setText("Save pattern");
+        } else
             System.out.println("Size or line width is not Valid");
     }
 
@@ -113,6 +131,7 @@ public class DrawingController {
         DrawingLogic drawingLogic = new DrawingLogic(lstShapes.getItems(), cbPattern.getValue(), canvas);
         btnSave.setDisable(false);
     }
+
     @FXML
     private void btnClearClicked() {
         lstShapes.getItems().clear();
@@ -120,11 +139,13 @@ public class DrawingController {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         lblCount.setVisible(false);
         btnSave.setDisable(true);
+        LoadSave loadSave = new LoadSave(FILENAME);
+        checkIfExists();
     }
 
     @FXML
     private void checkBoxFilled() {
-       // cbColor.setVisible(ckFill.isSelected());
+        // cbColor.setVisible(ckFill.isSelected());
     }
 
     @FXML
@@ -141,7 +162,7 @@ public class DrawingController {
     }
 
     private boolean checkForValidSize(String size) {
-        if (size.isEmpty() || !Pattern.matches("[0-9]+", size) )
+        if (size.isEmpty() || !Pattern.matches("[0-9]+", size))
             return false;
         else {
             int numSize = Integer.parseInt(size);
@@ -149,6 +170,18 @@ public class DrawingController {
                 return false;
             else
                 return true;
+        }
+    }
+
+    @FXML
+    private void btnLoadClicked() {
+        List<Shapes> shapes = new ArrayList<>();
+        LoadSave loadSave = new LoadSave(FILENAME);
+        if (!lstShapes.getItems().isEmpty()) {
+            shapes.addAll(lstShapes.getItems());
+            loadSave.save(shapes);
+        } else if (loadSave.isExists(FILENAME)) {
+            shapes.addAll(loadSave.load());
         }
     }
 }

@@ -13,7 +13,7 @@
    <children>
       <ChoiceBox fx:id="cbShape" layoutX="13.0" layoutY="56.0" prefWidth="150.0" />
       <TextField fx:id="txtSize" layoutX="14.0" layoutY="443.0" promptText="Size" />
-      <Button fx:id="btnAdd" layoutX="14.0" layoutY="481.0" mnemonicParsing="false" onAction="#ButtonAddClicked" prefHeight="26.0" prefWidth="150.0" text="Add -&gt;" />
+      <Button fx:id="btnAdd" layoutX="14.0" layoutY="481.0" mnemonicParsing="false" onAction="#buttonAddClicked" prefHeight="26.0" prefWidth="150.0" text="Add -&gt;" />
       <ListView fx:id="lstShapes" layoutX="176.0" layoutY="55.0" prefHeight="453.0" prefWidth="180.0" />
       <ChoiceBox fx:id="cbPattern" layoutX="191.0" layoutY="522.0" prefWidth="150.0" />
       <Button fx:id="btnDraw" layoutX="635.0" layoutY="522.0" mnemonicParsing="false" onAction="#btnDrawClicked" prefHeight="26.0" prefWidth="150.0" text="Draw shapes" />
@@ -26,6 +26,7 @@
       <CheckBox fx:id="ckFill" layoutX="14.0" layoutY="153.0" mnemonicParsing="false" onAction="#checkBoxFilled" text="Fill" />
       <ChoiceBox fx:id="cbColor" layoutX="14.0" layoutY="177.0" prefWidth="150.0" />
       <Label fx:id="lblCount" layoutX="177.0" layoutY="38.0" />
-      <Button fx:id="btnSave" layoutX="635.0" layoutY="559.0" mnemonicParsing="false" onAction="#btnSaveClicked" prefHeight="26.0" prefWidth="150.0" text="Save as image and pdf" disable="true" />
+      <Button fx:id="btnSave" disable="true" layoutX="635.0" layoutY="559.0" mnemonicParsing="false" onAction="#btnSaveClicked" prefHeight="26.0" prefWidth="150.0" text="Save as image and pdf" />
+      <Button fx:id="btnLoad" disable="true" layoutX="473.0" layoutY="559.0" mnemonicParsing="false" onAction="#btnLoadClicked" prefHeight="26.0" prefWidth="150.0" text="Load pattern" />
    </children>
 </AnchorPane>
