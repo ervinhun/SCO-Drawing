@@ -145,7 +145,7 @@ public class DrawingController {
 
     @FXML
     private void checkBoxFilled() {
-         cbColor.setVisible(ckFill.isSelected());
+         //cbColor.setVisible(ckFill.isSelected());
     }
 
     @FXML
